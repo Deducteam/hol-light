@@ -29,7 +29,9 @@ jobs:
           eval `opam env`
           ./hol2dk xhol.ml recursion.dk
       - name: Generate recursion.lp
-        run: ./hol2lp xhol.ml recursion.lp
+        run: |
+          eval `opam env`
+          ./hol2lp xhol.ml recursion.lp
 #      - name: Install kocheck
 #        run: |
 #          cd ~
