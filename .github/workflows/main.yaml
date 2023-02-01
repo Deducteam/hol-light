@@ -1,0 +1,50 @@
+on:
+  pull_request:
+    types: [opened, synchronize, edited, reopened]
+  push:
+  workflow_dispatch:
+jobs:
+  isabelle_dedukti:
+    strategy:
+      fail-fast: false
+      matrix:
+        ocaml-version-for-hol-light: [4.02.3]
+        camlp5-version-for-hol-light: [6.17]
+        ocaml-version-for-dedukti: [4.14.1]
+        dedukti-version: [2.7]
+        lambdapi-version: [2.3.0]
+    runs-on: ubuntu-latest
+    steps:
+    # actions/checkout must be done BEFORE avsm/setup-ocaml
+      - name: Checkout hol-light
+        uses: actions/checkout@v3
+      - name: Install opam
+        uses: avsm/setup-ocaml@v2
+        with:
+          ocaml-compiler: ${{ matrix.ocaml-version-for-hol-light }}
+      - name: Install hol-light dependencies
+        run: opam install camlp5.6.17 num ocamlfind
+      - name: Generate recursion.dk
+        run: ./hol2dk xhol.ml recursion.dk
+      - name: Generate recursion.lp
+        run: ./hol2lp xhol.ml recursion.lp
+      - name: Create opam switch for ocaml ${{ matrix.ocaml-version-for-dedukti }}
+        run: opam switch create ${{ matrix.ocaml-version-for-dedukti }}
+      - name: Install dkcheck
+        run: opam install dedukti.${{ matrix.dedukti-version }}
+      - name: Install lambdapi
+        run: opam install lambdapi.${{ matrix.lambdapi-version }}
+#      - name: Install kocheck
+#        run: |
+#          cd ~
+#          git clone https://github.com/01mf02/kontroli-rs.git
+#          cd ~/kontroli-rs
+#          cargo install --path kocheck
+      - name: Check lp output with lambdapi
+        run: |
+          eval $(opam env)
+          lambdapi check recursion.lp
+      - name: Check dk output with dkcheck
+        run: |
+          eval $(opam env)
+          dk check recursion.dk
