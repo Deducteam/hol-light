@@ -25,26 +25,28 @@ jobs:
       - name: Install hol-light dependencies
         run: opam install camlp5.6.17 num ocamlfind
       - name: Generate recursion.dk
-        run: ./hol2dk xhol.ml recursion.dk
+        run: |
+          eval `opam env`
+          ./hol2dk xhol.ml recursion.dk
       - name: Generate recursion.lp
         run: ./hol2lp xhol.ml recursion.lp
-      - name: Create opam switch for ocaml ${{ matrix.ocaml-version-for-dedukti }}
-        run: opam switch create ${{ matrix.ocaml-version-for-dedukti }}
-      - name: Install dkcheck
-        run: opam install dedukti.${{ matrix.dedukti-version }}
-      - name: Install lambdapi
-        run: opam install lambdapi.${{ matrix.lambdapi-version }}
 #      - name: Install kocheck
 #        run: |
 #          cd ~
 #          git clone https://github.com/01mf02/kontroli-rs.git
 #          cd ~/kontroli-rs
 #          cargo install --path kocheck
-      - name: Check lp output with lambdapi
-        run: |
-          eval $(opam env)
-          lambdapi check recursion.lp
+      - name: Create opam switch for ocaml ${{ matrix.ocaml-version-for-dedukti }}
+        run: opam switch create ${{ matrix.ocaml-version-for-dedukti }}
+      - name: Install dkcheck
+        run: opam install dedukti.${{ matrix.dedukti-version }}
       - name: Check dk output with dkcheck
         run: |
           eval $(opam env)
           dk check recursion.dk
+      - name: Install lambdapi
+        run: opam install lambdapi.${{ matrix.lambdapi-version }}
+      - name: Check lp output with lambdapi
+        run: |
+          eval $(opam env)
+          lambdapi check recursion.lp
