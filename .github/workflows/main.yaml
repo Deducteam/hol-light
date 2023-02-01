@@ -12,6 +12,7 @@ jobs:
         camlp5-version-for-hol-light: [6.17]
         ocaml-version-for-dedukti: [4.14.1]
         dedukti-version: [2.7]
+        ocaml-version-for-lambdapi: [4.14.1]
         lambdapi-version: [2.3.0]
     runs-on: ubuntu-latest
     steps:
@@ -38,26 +39,15 @@ jobs:
 #          git clone https://github.com/01mf02/kontroli-rs.git
 #          cd ~/kontroli-rs
 #          cargo install --path kocheck
-      - name: Create opam switch for ocaml ${{ matrix.ocaml-version-for-dedukti }}
-        run: opam switch create ${{ matrix.ocaml-version-for-dedukti }}
-      - name: Install dkcheck
-        run: |
-          opam switch ${{ matrix.ocaml-version-for-dedukti }}
-          opam install dedukti.${{ matrix.dedukti-version }}
       - name: Check dk output with dkcheck
         run: |
-          eval $(opam env)
+          opam switch create dk ${{ matrix.ocaml-version-for-dedukti }}
+          eval `opam env --switch=dk`
+          opam install dedukti.${{ matrix.dedukti-version }}
           dk check recursion.dk
-      - name: Uninstall dkcheck
-        run: |
-          opam switch ${{ matrix.ocaml-version-for-dedukti }}
-          opam uninstall dedukti
-      - name: Install lambdapi
-        run: |
-          opam switch ${{ matrix.ocaml-version-for-dedukti }}
-          opam install lambdapi.${{ matrix.lambdapi-version }}
       - name: Check lp output with lambdapi
         run: |
-          opam switch ${{ matrix.ocaml-version-for-dedukti }}        
-          eval $(opam env)
+          opam switch create lp ${{ matrix.ocaml-version-for-lambdapi }}
+          eval `opam env --switch=lp`
+          opam install lambdapi.${{ matrix.lambdapi-version }}
           lambdapi check recursion.lp
