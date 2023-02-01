@@ -1,12 +1,10 @@
 on:
   pull_request:
     types: [opened, synchronize, edited, reopened]
-    branches:
-    - dk
   push:
   workflow_dispatch:
 jobs:
-  isabelle_dedukti:
+  hol-light-to-dedukti:
     strategy:
       fail-fast: false
       matrix:
