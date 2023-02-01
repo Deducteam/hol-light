@@ -1,6 +1,8 @@
 on:
   pull_request:
     types: [opened, synchronize, edited, reopened]
+    branches:
+    - dk
   push:
   workflow_dispatch:
 jobs:
