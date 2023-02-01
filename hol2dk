@@ -1,0 +1,12 @@
+#!/bin/sh
+
+if test $# -ne 2; then echo "usage: $0 file.ml file.dk"; exit 1; fi
+
+cat << EOF | ocaml -I `camlp5 -where` camlp5o.cma
+#use "xprelude.ml";;
+#use "$1";;
+#use "xlib.ml";;
+update_map_const_type_vars_pos();;
+#use "xdk.ml";;
+export_to_dk "$2" All;;
+EOF
