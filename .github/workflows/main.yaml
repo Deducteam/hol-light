@@ -46,6 +46,8 @@ jobs:
         run: |
           eval $(opam env)
           dk check recursion.dk
+      - name: Uninstall dkcheck
+        run: opam uninstall dedukti
       - name: Install lambdapi
         run: opam install lambdapi.${{ matrix.lambdapi-version }}
       - name: Check lp output with lambdapi
