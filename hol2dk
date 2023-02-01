@@ -2,7 +2,10 @@
 
 if test $# -ne 2; then echo "usage: $0 file.ml file.dk"; exit 1; fi
 
-cat << EOF | ocaml -I `camlp5 -where` camlp5o.cma
+cat << EOF | ocaml
+#use "topfind";;
+#require "camlp5";;
+#load "camlp5o.cma";;
 #use "xprelude.ml";;
 #use "$1";;
 #use "xlib.ml";;
