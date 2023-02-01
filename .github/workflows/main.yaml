@@ -50,13 +50,14 @@ jobs:
           dk check recursion.dk
       - name: Uninstall dkcheck
         run: |
-          opam switch ${{ matrix.ocaml-version-for-dedukti }}        
+          opam switch ${{ matrix.ocaml-version-for-dedukti }}
           opam uninstall dedukti
       - name: Install lambdapi
         run: |
-          opam switch ${{ matrix.ocaml-version-for-dedukti }}        
+          opam switch ${{ matrix.ocaml-version-for-dedukti }}
           opam install lambdapi.${{ matrix.lambdapi-version }}
       - name: Check lp output with lambdapi
         run: |
+          opam switch ${{ matrix.ocaml-version-for-dedukti }}        
           eval $(opam env)
           lambdapi check recursion.lp
