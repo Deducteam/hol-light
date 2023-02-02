@@ -28,10 +28,12 @@ jobs:
       - name: Generate and check dk output
         run: |
           eval `opam env`
+          make
           ./hol2dk xhol.ml recursion.dk
           dk check recursion.dk
       - name: Generate and check lp output
         run: |
           eval `opam env`
+          make
           ./hol2lp xhol.ml recursion.lp
           lambdapi check recursion.lp
