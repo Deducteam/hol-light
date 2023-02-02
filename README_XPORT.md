@@ -25,8 +25,17 @@ Requirements
 Usage
 -----
 
+The first time you clone hol-light, or if you change your version of
+ocaml and camlp5, do:
+
+```
+cd $hol_light_directory
+make
+```
+
 Run the OCaml toplevel:
 ```
+cd $hol_light_directory
 ocaml -I `camlp5 -where` camlp5o.cma
 ```
 

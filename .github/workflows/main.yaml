@@ -25,15 +25,15 @@ jobs:
         run: |
           sudo apt-get install -y libipc-system-simple-perl libstring-shellquote-perl
           opam install camlp5.${{ matrix.camlp5-version }} num ocamlfind dedukti.${{ matrix.dedukti-version }} lambdapi.${{ matrix.lambdapi-version }}
-      - name: Generate and check dk output
-        run: |
-          eval `opam env`
-          make
-          ./hol2dk xhol.ml recursion.dk
-          dk check recursion.dk
       - name: Generate and check lp output
         run: |
           eval `opam env`
           make
           ./hol2lp xhol.ml recursion.lp
           lambdapi check recursion.lp
+      - name: Generate and check dk output
+        run: |
+          eval `opam env`
+          make
+          ./hol2dk xhol.ml recursion.dk
+          dk check recursion.dk
