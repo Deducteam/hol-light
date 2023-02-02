@@ -22,7 +22,9 @@ jobs:
         with:
           ocaml-compiler: ${{ matrix.ocaml-version }}
       - name: Install hol-light dependencies, dedukti and lambdapi
-        run: opam install camlp5.${{ matrix.camlp5-version }} num ocamlfind dedukti.${{ matrix.dedukti-version }} lambdapi.${{ matrix.lambdapi-version }}
+        run: |
+          apt-get install libipc-system-simple-perl libstring-shellquote-perl
+          opam install camlp5.${{ matrix.camlp5-version }} num ocamlfind dedukti.${{ matrix.dedukti-version }} lambdapi.${{ matrix.lambdapi-version }}
       - name: Generate dk output
         run: |
           eval `opam env`
