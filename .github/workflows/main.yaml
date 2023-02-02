@@ -30,7 +30,7 @@ jobs:
           eval `opam env`
           make
           ./hol2lp xhol.ml recursion.lp
-          lambdapi check --map-dir hol-light:. recursion.lp
+          lambdapi check --map-dir=hol-light:. recursion.lp
       - name: Generate and check dk output
         run: |
           eval `opam env`
