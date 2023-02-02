@@ -258,11 +258,12 @@ let decl_sym oc (n,b) =
 let decl_def oc th =
   let t = concl th in
   let rmap = renaming_map [] in (* definitions are closed *)
-  match concl th with
-  | Comb(Comb(Const("=",_),Const(n,_)),_) as c ->
-     let tvs = type_vars_in_term c in
-     out oc "%a : %aPrf %a.\n"
-       (suffix "_def") n (list (decl_typ_param tvs)) tvs (term tvs rmap) c
+  match t with
+  | Comb(Comb(Const("=",_),Const(n,_)),_) ->
+     let tvs = type_vars_in_term t in
+     out oc "%a : %aPrf %a.\n" (suffix "_def") n
+       (list (decl_typ_param tvs)) tvs
+       (term tvs rmap) t
   | _ -> assert false
 ;;
 
@@ -272,9 +273,9 @@ let decl_axioms oc ths =
     let xs = frees t in
     let rmap = renaming_map xs in
     let tvs = type_vars_in_term t in
-    out oc "def axiom_%d : %a%aPrf %a.\n"
-      i (list (decl_typ_param tvs)) tvs
-      (list (decl_param tvs rmap)) xs (term tvs rmap) t
+    out oc "def axiom_%d : %a%aPrf %a.\n" i
+      (list (decl_typ_param tvs)) tvs  (list (decl_param tvs rmap)) xs
+      (term tvs rmap) t
   in
   List.iteri axiom ths
 ;;
