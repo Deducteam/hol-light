@@ -20,7 +20,7 @@ let valid_name n = if is_valid_id n then n else "{|" ^ String.escaped n ^ "|}"
 (* We rename some symbols to make files smaller and more readable. *)
 let valid_name = function
   | "=" -> "eq"
-  | "," -> "̦pair"
+  | "," -> "pair"
   | "@" -> "choice"
   | "\\/" -> "or"
   | "/\\" -> "and"
